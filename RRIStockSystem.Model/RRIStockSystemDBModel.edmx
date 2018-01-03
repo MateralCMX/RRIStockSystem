@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RRIStockSystemDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="T_ApplicationLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Types" Type="tinyint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Contents" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Manufactor" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Mobile" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="FK_Variety" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Region" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="IfDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Stock">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FK_Product" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StockDateTime" Type="datetime" Nullable="false" />
+          <Property Name="StockNumber" Type="int" Nullable="false" />
+          <Property Name="StockType" Type="tinyint" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="300" />
+          <Property Name="IfDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TrueName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Token" Type="varchar" MaxLength="32" />
+          <Property Name="TokenReadTime" Type="datetime" />
+          <Property Name="IfDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Variety">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IfDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“RRIStockSystemDB.dbo.V_User”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="V_User">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="TrueName" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TrueName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Token" Type="varchar" MaxLength="32" />
+          <Property Name="TokenReadTime" Type="datetime" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_T_Product_T_Variety">
+          <End Role="T_Variety" Type="Self.T_Variety" Multiplicity="1" />
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Variety">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Product">
+              <PropertyRef Name="FK_Variety" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Stock_T_Product">
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="1" />
+          <End Role="T_Stock" Type="Self.T_Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Stock">
+              <PropertyRef Name="FK_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RRIStockSystemDBModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ApplicationLog" EntityType="Self.T_ApplicationLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Product" EntityType="Self.T_Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Stock" EntityType="Self.T_Stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_User" EntityType="Self.T_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Variety" EntityType="Self.T_Variety" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V_User" EntityType="Self.V_User" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_User].[ID] AS [ID], 
+    [V_User].[UserName] AS [UserName], 
+    [V_User].[TrueName] AS [TrueName], 
+    [V_User].[Password] AS [Password], 
+    [V_User].[Token] AS [Token], 
+    [V_User].[TokenReadTime] AS [TokenReadTime], 
+    [V_User].[CreateTime] AS [CreateTime]
+    FROM [dbo].[V_User] AS [V_User]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_T_Product_T_Variety" Association="Self.FK_T_Product_T_Variety">
+            <End Role="T_Variety" EntitySet="T_Variety" />
+            <End Role="T_Product" EntitySet="T_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Stock_T_Product" Association="Self.FK_T_Stock_T_Product">
+            <End Role="T_Product" EntitySet="T_Product" />
+            <End Role="T_Stock" EntitySet="T_Stock" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RRIStockSystemDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="T_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Manufactor" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mobile" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FK_Variety" Type="Guid" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="T_Variety" Relationship="Self.FK_T_Product_T_Variety" FromRole="T_Product" ToRole="T_Variety" />
+          <NavigationProperty Name="T_Stock" Relationship="Self.FK_T_Stock_T_Product" FromRole="T_Product" ToRole="T_Stock" />
+        </EntityType>
+        <EntityType Name="T_Stock">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="FK_Product" Type="Guid" Nullable="false" />
+          <Property Name="StockDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StockNumber" Type="Int32" Nullable="false" />
+          <Property Name="StockType" Type="Byte" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="T_Product" Relationship="Self.FK_T_Stock_T_Product" FromRole="T_Stock" ToRole="T_Product" />
+        </EntityType>
+        <EntityType Name="T_Variety">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="T_Product" Relationship="Self.FK_T_Product_T_Variety" FromRole="T_Variety" ToRole="T_Product" />
+        </EntityType>
+        <Association Name="FK_T_Product_T_Variety">
+          <End Role="T_Variety" Type="Self.T_Variety" Multiplicity="1" />
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Variety">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Product">
+              <PropertyRef Name="FK_Variety" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Stock_T_Product">
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="1" />
+          <End Role="T_Stock" Type="Self.T_Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="T_Stock">
+              <PropertyRef Name="FK_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RRIStockSystemDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="T_Product" EntityType="Self.T_Product" />
+          <EntitySet Name="T_Stock" EntityType="Self.T_Stock" />
+          <EntitySet Name="T_Variety" EntityType="Self.T_Variety" />
+          <AssociationSet Name="FK_T_Product_T_Variety" Association="Self.FK_T_Product_T_Variety">
+            <End Role="T_Variety" EntitySet="T_Variety" />
+            <End Role="T_Product" EntitySet="T_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Stock_T_Product" Association="Self.FK_T_Stock_T_Product">
+            <End Role="T_Product" EntitySet="T_Product" />
+            <End Role="T_Stock" EntitySet="T_Stock" />
+          </AssociationSet>
+          <EntitySet Name="T_User" EntityType="RRIStockSystemDBModel.T_User" />
+          <EntitySet Name="V_User" EntityType="RRIStockSystemDBModel.V_User" />
+          <EntitySet Name="T_ApplicationLog" EntityType="RRIStockSystemDBModel.T_ApplicationLog" />
+        </EntityContainer>
+        <EntityType Name="T_User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TrueName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Token" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="IfDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TokenReadTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="V_User">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="TrueName" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="CreateTime" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TrueName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Token" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TokenReadTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="T_ApplicationLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Types" Type="Byte" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Contents" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RRIStockSystemDBModelStoreContainer" CdmEntityContainer="RRIStockSystemDBEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Product">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.T_Product">
+              <MappingFragment StoreEntitySet="T_Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Manufactor" ColumnName="Manufactor" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="FK_Variety" ColumnName="FK_Variety" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Stock">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.T_Stock">
+              <MappingFragment StoreEntitySet="T_Stock">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FK_Product" ColumnName="FK_Product" />
+                <ScalarProperty Name="StockDateTime" ColumnName="StockDateTime" />
+                <ScalarProperty Name="StockNumber" ColumnName="StockNumber" />
+                <ScalarProperty Name="StockType" ColumnName="StockType" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Variety">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.T_Variety">
+              <MappingFragment StoreEntitySet="T_Variety">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_User">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.T_User">
+              <MappingFragment StoreEntitySet="T_User">
+                <ScalarProperty Name="TokenReadTime" ColumnName="TokenReadTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IfDelete" ColumnName="IfDelete" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="TrueName" ColumnName="TrueName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_User">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.V_User">
+              <MappingFragment StoreEntitySet="V_User">
+                <ScalarProperty Name="TokenReadTime" ColumnName="TokenReadTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="TrueName" ColumnName="TrueName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_ApplicationLog">
+            <EntityTypeMapping TypeName="RRIStockSystemDBModel.T_ApplicationLog">
+              <MappingFragment StoreEntitySet="T_ApplicationLog">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Contents" ColumnName="Contents" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Types" ColumnName="Types" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
