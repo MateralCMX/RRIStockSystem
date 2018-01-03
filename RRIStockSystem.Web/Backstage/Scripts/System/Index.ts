@@ -26,7 +26,7 @@ namespace RRIStockSystem.Backstage {
                             ID: "2-1",
                             Name: "库存查看",
                             Ico: "glyphicon glyphicon-eye-open",
-                            Code: "/Backstage/View/Stock/StockList.html",
+                            Code: "/Backstage/View/Stock/Stock.html",
                             Items: null
                         },
                         {
@@ -55,14 +55,14 @@ namespace RRIStockSystem.Backstage {
                             ID: "3-1",
                             Name: "类别管理",
                             Ico: "glyphicon glyphicon-tag",
-                            Code: "/Backstage/View/Variety/VarietyList.html",
+                            Code: "/Backstage/View/Variety/Variety.html",
                             Items: null
                         },
                         {
                             ID: "3-2",
                             Name: "产品管理",
                             Ico: "glyphicon glyphicon-file",
-                            Code: "/Backstage/View/Product/ProductList.html",
+                            Code: "/Backstage/View/Product/Product.html",
                             Items: null
                         }
                     ]
@@ -77,7 +77,7 @@ namespace RRIStockSystem.Backstage {
                             ID: "4-1",
                             Name: "用户管理",
                             Ico: "glyphicon glyphicon-user",
-                            Code: "/Backstage/View/User/UserList.html",
+                            Code: "/Backstage/View/User/User.html",
                             Items: null
                         }
                     ]

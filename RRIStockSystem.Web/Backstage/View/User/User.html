@@ -17,32 +17,8 @@
             <input id="SearchUserName" type="search" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="SearchNickName">昵称</label>
-            <input id="SearchNickName" type="search" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="SearchMobile">手机号码</label>
-            <input id="SearchMobile" type="search" maxlength="11" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="SearchEmail">邮箱</label>
-            <input id="SearchEmail" type="search" class="form-control" />
-        </div>
-        <div class="form-group">
             <label for="SearchTrueName">真实姓名</label>
             <input id="SearchTrueName" type="search" class="form-control" />
-        </div>
-        <!--<div class="form-group">
-            <label for="SearchWeChatWorkUserID">企业微信账号</label>
-            <input id="SearchWeChatWorkUserID" type="search" class="form-control" />
-        </div>-->
-        <div class="form-group">
-            <label for="SearchIfEnable">启用状态</label>
-            <select id="SearchIfEnable" class="form-control">
-                <option value="null">全部</option>
-                <option value="true">启用</option>
-                <option value="false">禁用</option>
-            </select>
         </div>
         <div class="form-group OptionBtnGroup">
             <div class="btn-group" role="group">
@@ -57,12 +33,7 @@
                 <tr>
                     <th>编号</th>
                     <th>真实姓名</th>
-                    <th>昵称</th>
-                    <th>邮箱</th>
-                    <th>手机号码</th>
                     <th>用户名</th>
-                    <!--<th>企业微信账户</th>-->
-                    <th>启用/禁用</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -99,23 +70,8 @@
                 <div class="modal-body">
                     <form id="InputForm">
                         <div class="form-group">
-                            <label class="control-label" for="InputTrueName">真实姓名</label>
-                            <input type="text" class="form-control" id="InputTrueName" maxlength="50" placeholder="真实姓名" pattern="^[\u4E00-\u9FA5]+$">
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="InputNickName">昵称*</label>
-                            <input type="text" class="form-control" id="InputNickName" maxlength="50" placeholder="昵称" required>
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="InputMobile">手机号码*</label>
-                            <input type="text" class="form-control" id="InputMobile" maxlength="11" placeholder="手机号码" required pattern="^(13|14|15|18|17)\d{9}$">
-                            <span class="help-block"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="InputEmail">邮箱*</label>
-                            <input type="email" class="form-control" id="InputEmail" maxlength="100" placeholder="电子邮件地址" required pattern="^\w+@\w+\.\w+$">
+                            <label class="control-label" for="InputTrueName">真实姓名*</label>
+                            <input type="text" class="form-control" id="InputTrueName" maxlength="50" placeholder="真实姓名" required pattern="^[\u4E00-\u9FA5]+$">
                             <span class="help-block"></span>
                         </div>
                         <div class="form-group">
@@ -123,70 +79,11 @@
                             <input type="text" class="form-control" id="InputUserName" maxlength="50" placeholder="用户名" required pattern="^[a-zA-Z\d]+$">
                             <span class="help-block"></span>
                         </div>
-                        <!--<div class="form-group">
-                            <label class="control-label" for="InputWeChatWorkUserID">企业微信账户</label>
-                            <input type="text" class="form-control" id="InputWeChatWorkUserID" placeholder="企业微信账户" maxlength="20">
-                            <span class="help-block"></span>
-                        </div>-->
-                        <div class="checkbox">
-                            <label>
-                                <input id="InputIfEnable" type="checkbox"> 启用
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="InputSex">性别</label>
-                            <select id="InputSex" class="form-control"></select>
-                            <span class="help-block"></span>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button id="BtnSave" type="button" class="btn btn-primary">保存</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 设置用户组窗体 -->
-    <div class="modal fade bs-example-modal-lg" id="UserGroupModal" tabindex="-1" role="dialog" aria-labelledby="UserGroupModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="UserGroupModalLabel">设置用户组</h4>
-                </div>
-                <div class="modal-body row">
-                    <div class="col-md-4">
-                        <h5>已拥有用户组</h5>
-                        <ol id="UserGroupList"></ol>
-                    </div>
-                    <div class="col-md-8">
-                        <h5>用户组添加</h5>
-                        <form class="form-inline" id="SearchUserGroupForm">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input id="SearchUserGroupName" type="search" class="form-control" placeholder="请输入用户组名称" required>
-                                    <span class="input-group-btn">
-                                        <button id="BtnUserGroupSearch" class="btn btn-default" type="button">搜索</button>
-                                    </span>
-                                </div>
-                                <span class="help-block"></span>
-                            </div>
-                        </form>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>编号</th>
-                                    <th>名称</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="UserGroupDataTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
                 </div>
             </div>
         </div>
